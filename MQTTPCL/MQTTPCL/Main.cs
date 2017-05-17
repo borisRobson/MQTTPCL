@@ -12,11 +12,9 @@ namespace MQTTPCL
         public App(MqttClient cli)
         {
             client = cli;
-            mqttManager = new MqttManager(new MqttService(), client);
+            mqttManager = new MqttManager( client);
             
-            MainPage = new NavigationPage(new MainView());
-
-            
+            MainPage = new NavigationPage(new MainView());           
            
             
         }

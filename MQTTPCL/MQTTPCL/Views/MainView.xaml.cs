@@ -25,11 +25,19 @@ namespace MQTTPCL
             if (connected)
            {
                Debug.WriteLine("****CONNECTED*****");
+                string[] topics = new string[1];
+                topics[0] = "/test";
+                byte[] qos = new byte[1];
+                qos[0] = (byte)1;
+                App.mqttManager.Subscribe(topics, qos);
+                
            }
            else
            {
                Debug.WriteLine("****NOT CONNECTED*****");
            }
+
+            
            
         }
     }

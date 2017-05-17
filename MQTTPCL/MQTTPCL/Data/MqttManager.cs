@@ -5,37 +5,41 @@ using System.Text;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Diagnostics;
 
 namespace MQTTPCL
 {
     public class MqttManager
     {
-        IMqttService mqttService;
+        
         MqttClient client;
-        public MqttManager(IMqttService service, MqttClient cli)
+        public MqttManager(MqttClient cli)
         {
-            mqttService = service;
             client = cli;
         }
         public bool ConnectClient()
-        {            
-            return mqttService.ConnectClient(client);
-        }
-        public void AssignPubReceivedHandler(MqttClient client, MqttClient.MqttMsgPublishEventHandler handler)
         {
-            mqttService.AssignPubReceivedHandler(client, handler);
+            client.Connect(Constants.clientID, Constants.user, Constants.passwd);
+            bool connected = client.IsConnected;
+            return connected;
         }
-        public void AssignConnClosedHandler(MqttClient client, MqttClient.ConnectionClosedEventHandler handler)
+
+        public void Subscribe(string[] topics, byte[] qos)
         {
-            mqttService.AssignConnClosedHandler(client, handler);
+            client.MqttMsgSubscribed += Client_MqttMsgSubscribed;
+            client.Subscribe(topics, qos);
         }
-        public void AssignSubscribedHandler(MqttClient client, MqttClient.MqttMsgSubscribedEventHandler handler)
+
+        private void Client_MqttMsgSubscribed(object sender, MqttMsgSubscribedEventArgs e)
         {
-            mqttService.AssignSubscribedHandler(client, handler);
+            Debug.WriteLine("***SUBCRIBED***");
+            client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
         }
-        public void AssignMsgPublishedHandler(MqttClient client, MqttClient.MqttMsgPublishedEventHandler handler)
+
+        private void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            mqttService.AssignMsgPublishedHandler(client, handler);
+            Debug.WriteLine("****MSG RECEIEVED****");
+            Debug.WriteLine(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
         }
     }
 }

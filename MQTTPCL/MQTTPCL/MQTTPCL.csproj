@@ -36,9 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Data\IMqttService.cs" />
     <Compile Include="Data\MqttManager.cs" />
-    <Compile Include="Data\MqttService.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Models\MQTTMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
