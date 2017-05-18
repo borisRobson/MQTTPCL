@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.Diagnostics;
+using Xamarin.Forms;
 
 namespace MQTTPCL
 {
@@ -17,6 +18,7 @@ namespace MQTTPCL
         {
             client = cli;
         }
+
         public bool ConnectClient()
         {
             client.Connect(Constants.clientID, Constants.user, Constants.passwd);
@@ -40,6 +42,12 @@ namespace MQTTPCL
         {
             Debug.WriteLine("****MSG RECEIEVED****");
             Debug.WriteLine(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
+            MQTTMessage msg = new MQTTMessage();
+            msg.Payload = Encoding.UTF8.GetString(e.Message, 0, e.Message.Length);
+            msg.Topic = e.Topic;
+            msg.Qos = e.QosLevel;
+
+            DependencyService.Get<INotifier>().Notify(msg);
         }
     }
 }

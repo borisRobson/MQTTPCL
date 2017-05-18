@@ -10,6 +10,7 @@ using Android.OS;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
+
 namespace MQTTPCL.Droid
 {
     [Activity(Label = "MQTTPCL", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -17,13 +18,14 @@ namespace MQTTPCL.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
-            
+
             base.OnCreate(bundle);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);            
-            
+            global::Xamarin.Forms.Forms.Init(this, bundle);
+
             MqttClient client = new MqttClient(Constants.brokerAddr, Constants.brokerPort, false, null, MqttSslProtocols.None);
-            LoadApplication(new App(client) );
+            
+            LoadApplication(new App(client));
 
         }
     }
